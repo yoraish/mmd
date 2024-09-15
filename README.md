@@ -1,2 +1,2 @@
-# Multi-Agent Planning with Diffusion Models
+# Multi-Agent Motion Planning with Diffusion Models
 ![MMD](media/mmd_5.gif)
