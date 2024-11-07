@@ -1,0 +1,7 @@
+network: myothernetwork
+layers: 3
+activations:
+  - relu
+  - relu
+  - tanh
+lr: 1e-3
