@@ -15,13 +15,13 @@ Welcome to our repository implementing MMD, as presented in:
 </tr>
 </table>
 
-[![MMD video.](media/mmd_youtube.png)](https://www.youtube.com/watch?v=lyW2IL_tJt0&ab_channel=yoraish)
+[![MMD video.](media/mmd_youtube.png)](https://www.youtube.com/watch?v=GDXzmoE-1D4&ab_channel=yoraish)
 
 ---
 This repository includes code for `MMD`, a method for multi-robot motion planning using diffusion models.
 
 **Updates**
-- [2024-11-07] We have cleaned up the code and released it on Github. The release includes stylistic and efficiency modifications to the code which may lead to slightly different results than those reported in the paper.
+- [2024-11-07] We have cleaned up the code and released it on GitHub. The release includes stylistic and efficiency modifications to the code which may lead to slightly different results than those reported in the paper.
 
 
 ---
