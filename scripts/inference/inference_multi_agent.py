@@ -57,7 +57,7 @@ from torch_robotics.trajectory.metrics import compute_smoothness, compute_path_l
 from torch_robotics.trajectory.utils import interpolate_traj_via_points
 from torch_robotics.visualizers.planning_visualizer import PlanningVisualizer
 from torch_robotics.robots.robot_planar_disk import RobotPlanarDisk
-from mmd.planners.multi_agent import CBS, PrioritizedPlanning
+from mmd.planners.multi_agent import CBS, PrioritizedPlanning, MPDComposite
 from mmd.planners.single_agent import MPD, MPDEnsemble
 from mmd.common.constraints import MultiPointConstraint, VertexConstraint, EdgeConstraint
 from mmd.common.conflicts import VertexConflict, PointConflict, EdgeConflict
@@ -164,28 +164,34 @@ def run_multi_agent_trial(test_config: MultiAgentPlanningSingleTrialConfig):
     # And for the reference skeleton.
     reference_task = None
     reference_robot = None
-    reference_agent_transforms = {}
-    reference_agent_model_ids = {}
-    for skeleton_step in range(len(reference_agent_skeleton)):
-        skeleton_model_coord = reference_agent_skeleton[skeleton_step]
-        reference_agent_transforms[skeleton_step] = global_model_transforms[skeleton_model_coord[0]][
-            skeleton_model_coord[1]]
-        reference_agent_model_ids[skeleton_step] = global_model_ids[skeleton_model_coord[0]][
-            skeleton_model_coord[1]]
-    reference_agent_model_ids = [reference_agent_model_ids[i] for i in range(len(reference_agent_model_ids))]
-    # Create the reference low level planner.
-    print("Creating reference agent stuff.")
-    low_level_planner_model_args['start_state_pos'] = torch.tensor([0.5, 0.9], **tensor_args)  # This does not matter.
-    low_level_planner_model_args['goal_state_pos'] = torch.tensor([-0.5, 0.9], **tensor_args)  # This does not matter.
-    low_level_planner_model_args['model_ids'] = reference_agent_model_ids  # This matters.
-    low_level_planner_model_args['transforms'] = reference_agent_transforms  # This matters.
+    if test_config.multi_agent_planner_class != "MPDComposite":
+        reference_agent_transforms = {}
+        reference_agent_model_ids = {}
+        for skeleton_step in range(len(reference_agent_skeleton)):
+            skeleton_model_coord = reference_agent_skeleton[skeleton_step]
+            reference_agent_transforms[skeleton_step] = global_model_transforms[skeleton_model_coord[0]][
+                skeleton_model_coord[1]]
+            reference_agent_model_ids[skeleton_step] = global_model_ids[skeleton_model_coord[0]][
+                skeleton_model_coord[1]]
+        reference_agent_model_ids = [reference_agent_model_ids[i] for i in range(len(reference_agent_model_ids))]
+        # Create the reference low level planner.
+        print("Creating reference agent stuff.")
+        low_level_planner_model_args['start_state_pos'] = torch.tensor([0.5, 0.9], **tensor_args)  # This does not matter.
+        low_level_planner_model_args['goal_state_pos'] = torch.tensor([-0.5, 0.9], **tensor_args)  # This does not matter.
+        low_level_planner_model_args['model_ids'] = reference_agent_model_ids  # This matters.
+        low_level_planner_model_args['transforms'] = reference_agent_transforms  # This matters.
 
-    if test_config.single_agent_planner_class == "MPD":
-        low_level_planner_model_args['model_id'] = reference_agent_model_ids[0]
+        if test_config.single_agent_planner_class == "MPD":
+            low_level_planner_model_args['model_id'] = reference_agent_model_ids[0]
+        if "WAStar" in test_config.single_agent_planner_class:
+            low_level_planner_model_args['delta_q_action_l'] = params.wastar_delta_q_action_l
+            low_level_planner_model_args['discretization'] = torch.tensor(params.wastar_discretization, **tensor_args)
+        if test_config.single_agent_planner_class == "WAStarData":
+            low_level_planner_model_args['is_use_data_cost'] = True
 
-    reference_low_level_planner = low_level_planner_class(**low_level_planner_model_args)
-    reference_task = reference_low_level_planner.task
-    reference_robot = reference_low_level_planner.robot
+        reference_low_level_planner = low_level_planner_class(**low_level_planner_model_args)
+        reference_task = reference_low_level_planner.task
+        reference_robot = reference_low_level_planner.robot
 
     # ============================
     # Run trial.
@@ -224,16 +230,18 @@ def run_multi_agent_trial(test_config: MultiAgentPlanningSingleTrialConfig):
     # ============================
     planners_creation_start_time = time.time()
     low_level_planner_l = []
-    for i in range(num_agents):
-        low_level_planner_model_args_i = low_level_planner_model_args.copy()
-        low_level_planner_model_args_i['start_state_pos'] = start_l[i]
-        low_level_planner_model_args_i['goal_state_pos'] = goal_l[i]
-        low_level_planner_model_args_i['model_ids'] = agent_model_ids_l[i]
-        low_level_planner_model_args_i['transforms'] = agent_model_transforms_l[i]
-        if test_config.single_agent_planner_class == "MPD":
-            # Set the model_id to the first one.
-            low_level_planner_model_args_i['model_id'] = agent_model_ids_l[i][0]
-        low_level_planner_l.append(low_level_planner_class(**low_level_planner_model_args_i))
+    if test_config.multi_agent_planner_class != "MPDComposite":
+        for i in range(num_agents):
+            low_level_planner_model_args_i = low_level_planner_model_args.copy()
+            low_level_planner_model_args_i['start_state_pos'] = start_l[i]
+            low_level_planner_model_args_i['goal_state_pos'] = goal_l[i]
+            low_level_planner_model_args_i['model_ids'] = agent_model_ids_l[i]
+            low_level_planner_model_args_i['transforms'] = agent_model_transforms_l[i]
+            if test_config.single_agent_planner_class == "MPD":
+                # Set the model_id to the first one.
+                low_level_planner_model_args_i['model_id'] = agent_model_ids_l[i][0]
+
+            low_level_planner_l.append(low_level_planner_class(**low_level_planner_model_args_i))
     print('Planners creation time:', time.time() - planners_creation_start_time)
     print("\n\n\n\n")
 
@@ -244,6 +252,14 @@ def run_multi_agent_trial(test_config: MultiAgentPlanningSingleTrialConfig):
         multi_agent_planner_class = CBS
     elif test_config.multi_agent_planner_class == "PP":
         multi_agent_planner_class = PrioritizedPlanning
+    # If this is a request for composite space diffusion planning, the model id is passed to the planner.
+    elif test_config.multi_agent_planner_class == "MPDComposite":
+        assert len(global_model_ids) == 1
+        assert len(global_model_ids[0]) == 1
+        model_id = global_model_ids[0][0]
+        multi_agent_planner_class = MPDComposite
+        high_level_planner_model_args['model_id'] = model_id
+        high_level_planner_model_args['results_dir'] = results_dir
     else:
         raise ValueError(f'Unknown multi agent planner class: {test_config.multi_agent_planner_class}')
     planner = multi_agent_planner_class(low_level_planner_l,

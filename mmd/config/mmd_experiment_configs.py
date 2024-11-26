@@ -278,3 +278,97 @@ class EnvTestThreeByThreeRobotPlanarDiskRandom(MMDPlanningProblemConfig):
         agent_skeleton_l = [self.agent_skeleton_options[i] for i in range(num_agents)]
 
         return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+#########################
+# Composite Robot environments.
+#########################
+
+
+class EnvEmpty2DRobotCompositeThreePlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvEmpty2D_RobotCompositeThreePlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 3
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvEmpty2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvEmptyNoWait2D-RobotCompositeThreePlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+
+class EnvEmpty2DRobotCompositeSixPlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvEmpty2D_RobotCompositeSixPlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 6
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvEmpty2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvEmptyNoWait2D-RobotCompositeSixPlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+
+class EnvEmpty2DRobotCompositeNinePlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvEmpty2D_RobotCompositeNinePlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 9
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvEmpty2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvEmptyNoWait2D-RobotCompositeNinePlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+
+class EnvHighways2DRobotCompositeThreePlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvHighways2D_RobotCompositeThreePlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 3
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvHighways2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvHighways2D-RobotCompositeThreePlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+
+class EnvHighways2DRobotCompositeSixPlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvHighways2D_RobotCompositeSixPlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 6
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvHighways2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvHighways2D-RobotCompositeSixPlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l
+
+
+class EnvHighways2DRobotCompositeNinePlanarDiskRandom(MMDPlanningProblemConfig):
+    def __init__(self):
+        self.name = "EnvHighways2D_RobotCompositeNinePlanarDisk_Random"
+
+    def get_planning_problem(self, num_agents):
+        assert num_agents == 9
+        start_state_pos_l, goal_state_pos_l = get_start_goal_pos_random_in_env(num_agents=num_agents,
+                                                                               env_class=EnvHighways2D,
+                                                                               tensor_args=params.tensor_args,
+                                                                               margin=0.15)
+        global_model_ids = [['EnvHighways2D-RobotCompositeNinePlanarDisk']]
+        agent_skeleton_l = [[[0, 0]]] * num_agents
+        return start_state_pos_l, goal_state_pos_l, global_model_ids, agent_skeleton_l

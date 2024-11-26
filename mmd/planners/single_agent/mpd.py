@@ -255,7 +255,7 @@ class MPD(SingleAgentPlanner):
 
         ########
         # Guiding manager
-        guide = GuideManagerTrajectoriesWithVelocity(  # Add Constraints to this file?
+        guide = GuideManagerTrajectoriesWithVelocity(
             dataset,
             cost_composite,
             clip_grad=True,

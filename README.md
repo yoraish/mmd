@@ -47,7 +47,7 @@ We have tested run our code on Ubuntu 20.04. The code _should_ work on other pla
     ```bash
    conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia
     ```
-4. Install the local packages. Those are mostly the work of [An Thei Le](https://github.com/anindex) and [João Carvalho](https://github.com/jacarvalho). Thank you for sharing your code!
+4. Install the local packages. Those are mostly the work of [An Thai Le](https://github.com/anindex) and [João Carvalho](https://github.com/jacarvalho). Thank you for sharing your code!
     ```bash
    cd deps/torch_robotics
    pip install -e .
@@ -94,6 +94,22 @@ tar -xJvf data_trained_models_small.tar.xz
 mv data_trained_models_small data_trained_models
 ```
 
+Composite models and data (only needed for composite models).
+```bash
+gdown --id 19B4kvkLs-pTmDY-nN715JbNrmttrUxoI
+tar -xJvf data_trajectories_composite.tar.xz
+
+gdown --id 1Bf80puyVW7fehWmdo3lVMi5m_7vBXOc8
+tar -xJvf data_trained_models_composite.tar.xz
+```
+Merge the `data_trained_models_composite` directory with the `data_trained_models` directory and the `data_trajectories_composite` directory with the `data_trajectories` directory if you'd like to keep all data together in the same codebase. Otherwise, rename the directories as follows:
+```bash
+# Rename.
+mv data_trained_models_composite data_trained_models
+mv data_trajectories_composite data_trajectories
+```
+
+
 ### Running Inference
 Let's look at a few ways to run inference with `mmd`.  
 
@@ -123,7 +139,7 @@ Switching the `example_type` variable from `"single_tile"` to `"multi_tile"` wil
 The results will be saved under the `mmd/results/` directory.
 
 **A Note on Inference**
-In this work, we primarily use the single-robot planner class named `MPDComposite`. This class allows composing multiple single-robot diffusion models and planning long-horizon trajectories through a sequence of local maps/skills. We also provide a single-robot planner named `MPD` which is unable to compose models, but could be simpler to understand (it is a "constrainable" version of [MPD](https://github.com/jacarvalho/mpd-public)). We do not guarantee identical behaviors between the two files, but encourage users trying to understand the code to look at `MPD` first. You can use `MPD` as the single-robot planner by changing the `single_agent_planner_class` variable in the inference script. 
+In this work, we primarily use the single-robot planner class named `MPDEnsemble`. This class allows composing multiple single-robot diffusion models and planning long-horizon trajectories through a sequence of local maps/skills. We also provide a single-robot planner named `MPD` which is unable to compose models, but could be simpler to understand (it is a "constrainable" version of [MPD](https://github.com/jacarvalho/mpd-public)). We do not guarantee identical behaviors between the two files, but encourage users trying to understand the code to look at `MPD` first. You can use `MPD` as the single-robot planner by changing the `single_agent_planner_class` variable in the inference script. 
 
 
 ---
@@ -155,6 +171,11 @@ We provide code for creating experiment sets combining different models, robot n
 conda activate mmd
 cd scripts/inference
 python3 launch_multi_agent_experiment.py
+```
+
+To run experiments with the composite models, use the following command:
+```bash
+python3 launch_mpd_composite_experiment.py
 ```
 
 ---

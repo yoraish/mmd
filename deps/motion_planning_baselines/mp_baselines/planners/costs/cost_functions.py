@@ -183,7 +183,7 @@ class CostCollision(Cost):
                 q_pos=q_pos,
                 q_vel=q_vel,
                 H_pos=H_pos,
-                calc_jacobian=False,  # TODO: NOTE(an): no need for grads in StochGPMP
+                calc_jacobian=False,
                 obstacle_spheres=observation.get('obstacle_spheres', None)
             )
             w_mat = self.obst_factor.K

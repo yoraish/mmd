@@ -57,6 +57,15 @@ dataset_subdir_l = [
     # 'EnvDropRegion2D-RobotPlanarDisk',
     # 'EnvHighways2D-RobotPlanarDisk',
     'EnvEmptyNoWait2D-RobotPlanarDisk',
+
+    # 'EnvEmptyNoWait2D-RobotCompositeTwoPlanarDisk',
+    # 'EnvEmptyNoWait2D-RobotCompositeThreePlanarDisk',
+    # 'EnvEmptyNoWait2D-RobotCompositeSixPlanarDisk',
+    # 'EnvEmptyNoWait2D-RobotCompositeNinePlanarDisk',
+    # 'EnvHighways2D-RobotCompositeTwoPlanarDisk',
+    # 'EnvHighways2D-RobotCompositeThreePlanarDisk',
+    # 'EnvHighways2D-RobotCompositeSixPlanarDisk',
+    # 'EnvHighways2D-RobotCompositeNinePlanarDisk',
 ]
 
 include_velocity_l = [
