@@ -1,4 +1,4 @@
-# Multi-Robot Motion Planning with Diffusion Models
+# [Multi-Robot Motion Planning with Diffusion Models](https://multi-robot-diffusion.github.io)
 
 Welcome to our repository implementing MMD, as presented in:
 
@@ -10,7 +10,7 @@ Welcome to our repository implementing MMD, as presented in:
   </a>
 </td>
 <td style="vertical-align: middle; border: none;">
-  <i>Shaoul*, Y., Mishani*, I., Vats*, S., Li, J. and Likhachev, M., 2024. <strong>Multi-Robot Motion Planning with Diffusion Models</strong>. arXiv preprint arXiv:2410.03072.</i>
+  <i>Shaoul*, Y., Mishani*, I., Vats*, S., Li, J. and Likhachev, M., 2025. <strong>Multi-Robot Motion Planning with Diffusion Models</strong>. In proceedings of the Thirteenth International Conference on Learning Representations (ICLR), also at AAAI 2025 Workshop on Multi-Agent Path Finding.</i>
 </td>
 </tr>
 </table>
