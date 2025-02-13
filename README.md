@@ -162,11 +162,13 @@ python3 launch_multi_agent_experiment.py
 
 If you use our work or code in your research, please cite our paper:
 ```latex
-@article{shaoul2024multi,
-  title={Multi-Robot Motion Planning with Diffusion Models},
-  author={Shaoul, Yorai and Mishani, Itamar and Vats, Shivam and Li, Jiaoyang and Likhachev, Maxim},
-  journal={arXiv preprint arXiv:2410.03072},
-  year={2024}
+@inproceedings{
+shaoul2025multirobot,
+title={Multi-Robot Motion Planning with Diffusion Models},
+author={Yorai Shaoul and Itamar Mishani and Shivam Vats and Jiaoyang Li and Maxim Likhachev},
+booktitle={The Thirteenth International Conference on Learning Representations},
+year={2025},
+url={https://openreview.net/forum?id=AUCYptvAf3}
 }
 ```
 
